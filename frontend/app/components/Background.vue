@@ -1,24 +1,26 @@
 <template>
-  <div class="pointer-events-none fixed top-0 left-0 -z-10 h-lvh w-lvw select-none">
-    <div v-for="(background, index) in activeBackgrounds" :key="Symbol(background)">
-      <Transition v-for="(num, jndex) in backgrounds[background]" name="layer">
-        <div
-          v-show="jndex <= activeBackgroundRevealIndices[index]!"
-          class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
-          :style="{ zIndex: `-${num}`, backgroundImage: `url('/backgrounds/${background}/layer-${num}.svg')` }"
-          aria-hidden="true"
-        ></div>
-      </Transition>
-      <Transition name="base">
-        <div
-          v-show="activeBackgroundRevealIndices[index]! === backgrounds[background]"
-          class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
-          :style="{ zIndex: `-${backgrounds[background] + 1}`, backgroundImage: `url('/backgrounds/${background}/base.svg')` }"
-          aria-hidden="true"
-        ></div>
-      </Transition>
+  <Teleport to="body">
+    <div class="pointer-events-none fixed top-0 left-0 -z-10 h-svh w-svw select-none">
+      <div v-for="(background, index) in activeBackgrounds" :key="Symbol(background)">
+        <Transition v-for="(num, jndex) in backgrounds[background]" name="layer">
+          <div
+            v-show="jndex <= activeBackgroundRevealIndices[index]!"
+            class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
+            :style="{ zIndex: `-${num}`, backgroundImage: `url('/backgrounds/${background}/layer-${num}.svg')` }"
+            aria-hidden="true"
+          ></div>
+        </Transition>
+        <Transition name="base">
+          <div
+            v-show="activeBackgroundRevealIndices[index]! === backgrounds[background]"
+            class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
+            :style="{ zIndex: `-${backgrounds[background] + 1}`, backgroundImage: `url('/backgrounds/${background}/base.svg')` }"
+            aria-hidden="true"
+          ></div>
+        </Transition>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -73,14 +75,14 @@ watch(
 <style scoped>
 @keyframes bounce-in {
   0% {
-    transform: translateY(100lvh);
+    transform: translateY(100svh);
     opacity: 0;
   }
   50% {
     opacity: 1;
   }
   70% {
-    transform: translateY(-10lvh);
+    transform: translateY(-10svh);
   }
   100% {
     transform: translateY(0);

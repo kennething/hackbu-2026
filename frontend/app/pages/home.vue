@@ -1,21 +1,18 @@
 <template>
-  <div class="flex flex-col items-center justify-center">
-    <VideoFeed class="fixed top-4 right-4 aspect-4/3 w-20" />
-
-    <h1>ur connected!</h1>
-    <button>race</button>
+  <div class="flex min-h-svh flex-col items-center justify-center">
+    <h1 class="title text-6xl font-medium">You're connected!</h1>
+    <NuxtLink to="/play/queue">race</NuxtLink>
   </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  background: "mountains"
+  background: "mountains",
+  middleware: "has-pair",
+  layout: "connected"
 });
 
-const route = useRoute();
-const router = useRouter();
-
-onMounted(() => {});
+useStandardTerminate();
 </script>
 
 <style scoped></style>

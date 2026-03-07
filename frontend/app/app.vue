@@ -1,7 +1,9 @@
 <template>
   <Background :background="currentBackground" />
 
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
