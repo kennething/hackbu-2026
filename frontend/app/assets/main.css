@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=DynaPuff:wght@400..700&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  prefix: "du-";
+  logs: false;
+}
+
+@theme {
+  /* --color-bg-white: #f8f8f8;
+  --color-green: #9ae28d;
+  --color-yellow: #fbfa90;
+  --color-blue: #95e9fe; */
+}
+
+.cherry-bomb-one {
+  font-family: "Cherry Bomb One";
+}
+* {
+  font-family: "DynaPuff";
+}
+
+button,
+a {
+  @apply cursor-pointer transition-transform active:scale-95;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
