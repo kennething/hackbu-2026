@@ -67,7 +67,7 @@ async function getCamera() {
     if (settings?.torch) track?.applyConstraints({ advanced: [{ torch: true }] });
     video.value.srcObject = stream.value;
     video.value.play();
-    interval = setInterval(emitFrame, 5000);
+    interval = setInterval(emitFrame, 500);
   } catch (error) {
     console.error("error accessing camera:", error);
   }

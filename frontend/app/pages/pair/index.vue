@@ -45,7 +45,6 @@ const unwatchCanvas = watch(qrCanvas, (canvas) => {
   const normalizedHref = window.location.href.endsWith("/") ? window.location.href.slice(0, -1) : window.location.href;
   $socket.emit("connectMainSocket", (_, code) => {
     pairingCode.value = code;
-    console.log(code);
     QRCode.toCanvas(qrCanvas.value, `${normalizedHref}/${code}`, { color: { light: "#56deff", dark: "#303030" }, width: 275, margin: 1, errorCorrectionLevel: "low" });
   });
 
