@@ -95,7 +95,8 @@ function emitFrame() {
   const quality = 0.5 as const;
   canvas.toBlob(
     (blob) => {
-      if (blob) $socket.emit("pollFrame", blob);
+      // TODO: add callback
+      if (blob) $socket.emit("pollFrame", blob, () => {});
     },
     "image/webp",
     quality

@@ -7,10 +7,13 @@
 
 <script setup lang="ts">
 definePageMeta({
-  background: "forest",
+  background: "grove",
   middleware: "has-pair",
   layout: "connected"
 });
+
+const { $socket } = useNuxtApp();
+onMounted(() => $socket.emit("joinQueue", () => navigateTo("/play/ready")));
 
 useStandardTerminate();
 </script>

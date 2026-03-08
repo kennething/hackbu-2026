@@ -2,10 +2,12 @@ export const useUserStore = defineStore("userStore", () => {
   const pairingCode = ref<string>();
 
   const currentBackground = ref<Background>();
-  const videoFeedOption = reactive({
+  const videoFeedOptions = reactive({
     size: "small" as "small" | "large",
     position: "right" as "left" | "right"
   });
 
-  return { pairingCode, currentBackground, videoFeedOption };
+  const currentWord = ref<string>();
+
+  return { pairingCode, currentBackground, videoFeedOptions, currentWord };
 });

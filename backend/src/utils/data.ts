@@ -1,5 +1,9 @@
-import { Room } from "./types";
+import { Match, SocketType } from "./types";
+import { CallbackFn } from "./events";
 import { UUID } from "crypto";
 
-/** Map between roomUuid and Room */
-export const rooms = new Map<UUID, Room>();
+/** Map between matchUuid and Match */
+export const matches = new Map<UUID, Match>();
+
+/** Queue of callback functions of all currently queued users */
+export const queue: { socket: SocketType; callback: CallbackFn }[] = [];

@@ -6,7 +6,7 @@
           <div
             v-show="jndex <= activeBackgroundRevealIndices[index]!"
             class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
-            :style="{ zIndex: `-${num}`, backgroundImage: `url('/backgrounds/${background}/layer-${num}.svg')` }"
+            :style="{ zIndex: `-${num}`, backgroundImage: `url('/backgrounds/${background}/layer-${num}.webp')` }"
             aria-hidden="true"
           ></div>
         </Transition>
@@ -14,7 +14,7 @@
           <div
             v-show="activeBackgroundRevealIndices[index]! === backgrounds[background]"
             class="absolute top-0 left-0 h-full w-full bg-cover bg-center"
-            :style="{ zIndex: `-${backgrounds[background] + 1}`, backgroundImage: `url('/backgrounds/${background}/base.svg')` }"
+            :style="{ zIndex: `-${backgrounds[background] + 1}`, backgroundImage: `url('/backgrounds/${background}/base.webp')` }"
             aria-hidden="true"
           ></div>
         </Transition>
