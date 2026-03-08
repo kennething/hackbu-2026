@@ -142,4 +142,14 @@ async def verify_word(data: ImageRequest, target: str = Query(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8008)
+    import os
+    import ssl
+
+    cert_file = os.path.join(os.path.dirname(__file__), "..", "backend", "cert.pem")
+    key_file = os.path.join(os.path.dirname(__file__), "..", "backend", "key.pem")
+
+    if os.path.exists(cert_file) and os.path.exists(key_file):
+        uvicorn.run(app, host="0.0.0.0", port=8000, ssl_certfile=cert_file, ssl_keyfile=key_file)
+    else:
+        print("No SSL certs found, running without HTTPS")
+        uvicorn.run(app, host="0.0.0.0", port=8000)
