@@ -21,34 +21,51 @@ async def detect_letters(request: Request):
     if img is None:
         return JSONResponse(status_code=400, content={"error": "Invalid image"})
 
+   
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Increase contrast (helps handwriting detection)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    enhanced = clahe.apply(gray)
+
+    # Reduce noise
+    enhanced = cv2.GaussianBlur(enhanced, (3,3), 0)
+
+    # Convert backs for YOLO
+    enhanced = cv2.cvtColor(enhanced, cv2.COLOR_GRAY2BGR)
+   
+
     # Run YOLO prediction
-    detections = model.predict(img, conf=0.25)
+    detections = model.predict(enhanced, conf=0.25)
 
     boxes = detections[0].boxes.xyxy.cpu().numpy()
     scores = detections[0].boxes.conf.cpu().numpy()
     classes = detections[0].boxes.cls.cpu().numpy()
 
-
-    results = []       #results with be stored with the location of the letter and the letter itself
+    results = []  # results will store location and letter
     for box, score, cls in zip(boxes, scores, classes):
         results.append({
-        'x': float(box[0]),
-        'y': float(box[1]),
-        'letter': model.names[int(cls)]
+            'x': float(box[0]),
+            'y': float(box[1]),
+            'letter': model.names[int(cls)]
         })
 
-    for obj in results:                 #sorted to corrected ordered from top to bottom, left to right
+    # Sort from top → bottom, then left → right
+    for obj in results:
         obj["x_rounded"] = round(obj["x"] * 10)
         obj["y_rounded"] = round(obj["y"] * 10)
+
     arr_sorted = sorted(results, key=lambda o: (o["y_rounded"], o["x_rounded"]))
+
     returnable = []
     for i in arr_sorted:
         returnable.append(i["letter"])
+
     return returnable
 
 
     
-if __name__ == "__main__":       #host is set to wifi IP so that front end could access through https
+if __name__ == "__main__":       #host is set to wifi IP so that front end could access through http
     import os
     import ssl
 
