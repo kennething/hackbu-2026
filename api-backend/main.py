@@ -32,17 +32,9 @@ def convert_base64_to_temp_jpg(base64_string):
         base64_string = base64_string.split(",")[1]
 
     # Decode base64 → bytes
-    img_data = base64.b64decode(base64_string)
+    img_bytes = base64.b64decode(base64_string)
 
-    # Create temporary jpg file
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-
-    # Write image bytes
-    with open(temp_file.name, "wb") as f:
-        f.write(img_data)
-
-    # Return file path as string
-    return temp_file.name
+    return img_bytes
   
 @app.get("/")
 async def root():
@@ -58,30 +50,35 @@ async def get_classes():
 
 @app.post("/detect")
 async def detect_letters(data: ImageRequest):
-    img = convert_base64_to_image(data.image)
-    if img is None:
-        return JSONResponse(status_code=400, content={"error": "Invalid image data"}) #sends a 400 Bad Request response if the image data is invalid
-    detections = model.predict(img, conf=0.25)
+
+    img_bytes = convert_base64_to_temp_jpg(data.image)
+
+    # create temporary jpg
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as temp_file:
+        temp_file.write(img_bytes)
+        temp_path = temp_file.name
+
+    # run model on temp image file
+    detections = model.predict(temp_path, conf=0.25)
 
     # Extract bounding box data
     boxes = detections[0].boxes.xyxy.cpu().numpy()
     scores = detections[0].boxes.conf.cpu().numpy()
     classes = detections[0].boxes.cls.cpu().numpy()
 
-   
     results = []
     for box, score, cls in zip(boxes, scores, classes):
         results.append({
-        'x1': float(box[0]),
-        'y1': float(box[1]),
-        'x2': float(box[2]),          #the locations of the bounding box in the image
-        'y2': float(box[3]),
-        'confidence': float(score), #score of accuracy of the detection
-        'class': int(cls), # prints out the int linked to the letter ex: 0:a, 1:b, 2:c
-        'letter': model.names[int(cls)]
+            "x1": float(box[0]),
+            "y1": float(box[1]),
+            "x2": float(box[2]),
+            "y2": float(box[3]),
+            "confidence": float(score),
+            "class": int(cls),
+            "letter": model.names[int(cls)]
         })
 
-    return {'detections': results}
+    return {"detections": results}
 
 #checks for single letters (used in the beginning of the game)
 @app.post("/verify") #checks if the detected letter matches the target letter provided in the query parameter. It returns a JSON response indicating whether there was a match, the confidence score of the detection, and the target letter.
