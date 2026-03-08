@@ -5,15 +5,14 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: false },
   css: ["~/assets/main.css"],
-  modules: ["@pinia/nuxt", "@formkit/auto-animate"],
+  modules: ["@pinia/nuxt"],
   vite: {
     // @ts-expect-error sybau
     plugins: [tailwindcss()]
   },
   runtimeConfig: {
     public: {
-      backendUrl: "",
-      scanbotKey: ""
+      backendUrl: ""
     }
   },
   app: {
