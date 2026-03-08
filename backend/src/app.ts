@@ -24,7 +24,9 @@ fs.readdirSync(routesDir).forEach(async (file) => {
   app.use("/", router);
 });
 
-const server = createServer({ key: fs.readFileSync("key.pem"), cert: fs.readFileSync("cert.pem") }, app);
+const key = fs.readFileSync("key.pem");
+const cert = fs.readFileSync("cert.pem");
+const server = key && cert ? createServer({ key, cert }, app) : createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, { cors: {} });
 
 io.on("connection", (socket) => {
