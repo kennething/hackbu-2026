@@ -1,1 +1,3 @@
 app/utils/events.ts
+public/scanbot/**
+!public/scanbot/dummy.txt

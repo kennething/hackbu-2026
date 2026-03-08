@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare && cp -R node_modules/scanbot-web-sdk/bundle/bin/barcode-scanner/* public/scanbot/"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.9.0",

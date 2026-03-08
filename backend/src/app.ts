@@ -24,8 +24,14 @@ fs.readdirSync(routesDir).forEach(async (file) => {
   app.use("/", router);
 });
 
-const key = fs.readFileSync("key.pem");
-const cert = fs.readFileSync("cert.pem");
+let key: Buffer | undefined;
+try {
+  key = fs.readFileSync("key.pem");
+} catch (error) {}
+let cert: Buffer | undefined;
+try {
+  cert = fs.readFileSync("cert.pem");
+} catch (error) {}
 const server = key && cert ? createServer({ key, cert }, app) : createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(server, { cors: {} });
 
