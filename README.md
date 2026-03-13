@@ -8,7 +8,7 @@ of Best Beginner Hack Award)
 ## Program Purpose
 
 The purpose of our program is to create a game where kids of all ages can
-practice theirhandwriting by themselves or with others.
+practice their handwriting by themselves or with others.
 
 We wanted to create an education experience for younger kids, while maintaining
 an engaging atmosphere for older kids. We created this program because we have
